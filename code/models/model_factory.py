@@ -9,7 +9,7 @@ from keras.utils.visualize_util import plot
 #from models.lenet import build_lenet
 #from models.alexNet import build_alexNet
 from models.vgg import build_vgg
-#from models.resnet import build_resnet50
+from models.resnet50 import build_resnet50
 #from models.inceptionV3 import build_inceptionV3
 
 # Detection models

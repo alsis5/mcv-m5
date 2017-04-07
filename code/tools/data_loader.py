@@ -977,15 +977,18 @@ class DirectoryIterator(Iterator):
 
             # Load GT image if detection
             if self.class_mode == 'detection':
-                label_path = os.path.join(self.directory, fname).replace('jpg','txt')
-                gt = np.loadtxt(label_path)
+                label_path = os.path.join(self.directory, fname).replace('png','txt')
+                gt = np.loadtxt(label_path, usecols=(0,1,2,3,4))
+
                 if len(gt.shape) == 1:
                     gt = gt[np.newaxis,]
                 y = gt.copy()
+                
                 y = y[((y[:,1] > 0.) & (y[:,1] < 1.))]
                 y = y[((y[:,2] > 0.) & (y[:,2] < 1.))]
                 y = y[((y[:,3] > 0.) & (y[:,3] < 1.))]
                 y = y[((y[:,4] > 0.) & (y[:,4] < 1.))]
+              
                 if (y.shape != gt.shape) or (y.shape[0] == 0):
                     warnings.warn('DirectoryIterator: found an invalid annotation '
                                   'on GT file '+label_path)
