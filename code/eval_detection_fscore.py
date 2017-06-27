@@ -12,11 +12,11 @@ from tools.yolo_utils import *
 
 # Input parameters to select the Dataset and the model used
 dataset_name = 'Udacity' #set to TT100K_detection otherwise
-model_name = 'tiny-yolo' #set to yolo otherwise
+model_name = 'yolo' #set to yolo otherwise
 
 # Net output post-processing needs two parameters:
 detection_threshold = 0.6 # Min probablity for a prediction to be considered
-nms_threshold       = 0.2 # Non Maximum Suppression threshold
+nms_threshold       = 0.4 # Non Maximum Suppression threshold
 # IMPORTANT: the values of these two params will affect the final performance of the netwrok
 #            you are allowed to find their optimal values in the validation/train sets
 
@@ -53,8 +53,9 @@ model.load_weights(sys.argv[1])
 test_dir = sys.argv[2]
 imfiles = [os.path.join(test_dir,f) for f in os.listdir(test_dir) 
                                     if os.path.isfile(os.path.join(test_dir,f)) 
-                                    and f.endswith('jpg')]
-
+                                    and (f.endswith('jpg') or f.endswith('png'))]
+output_dir = sys.argv[3]
+os.mkdir('/home/asoto/yolo_results/'+output_dir)
 if len(imfiles) == 0:
   print "ERR: path_to_images do not contain any jpg file"
   quit()
@@ -81,7 +82,9 @@ for i,img_path in enumerate(imfiles):
     net_out = model.predict(inputs, batch_size=16, verbose=1)
     print ('{} images predicted in {:.5f} seconds. {:.5f} fps').format(len(inputs),time.time() - start_time,(len(inputs)/(time.time() - start_time)))
 
+
     # find correct detections (per image)
+    idx = 0
     for i,img_path in enumerate(img_paths):
         boxes_pred = yolo_postprocess_net_out(net_out[i], priors, classes, detection_threshold, nms_threshold)
         boxes_true = []
@@ -110,10 +113,13 @@ for i,img_path in enumerate(imfiles):
               break
        
         # You can visualize/save per image results with this:
-        #im = cv2.imread(img_path)
-        #im = yolo_draw_detections(boxes_pred, im, priors, classes, detection_threshold, nms_threshold)
+        im = cv2.imread(img_path)
+        im = yolo_draw_detections(boxes_pred, im, priors, classes, detection_threshold, nms_threshold)
         #cv2.imshow('', im)
         #cv2.waitKey(0)
+        cv2.imwrite('/home/asoto/yolo_results/'+ output_dir + '/'+str(idx)+'.png',im)
+        idx +=1
+
 
 
     inputs = []

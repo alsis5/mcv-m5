@@ -11,6 +11,9 @@ sed -i -E "s/Cyclist/6/" *.txt
 sed -i -E "s/Tram/7/" *.txt
 sed -i -E "s/Misc/8/" *.txt
 
+sed -i -E "s/True//" *.txt
+sed -i -E "s/False//" *.txt
+
 for i in *.txt; do
     awk ' { t = $5; $5 = $4; $4 = $3; $3=$2; $2=$1; $1=t; print;} '  $i > $i.out
     rm $i

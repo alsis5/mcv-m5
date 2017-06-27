@@ -45,7 +45,7 @@ def process(cf):
         model.test(valid_gen)
         # Compute test metrics
         model.test(test_gen)
-
+    
     if cf.pred_model:
         # Compute validation metrics
         model.predict(valid_gen, tag='pred')
@@ -61,7 +61,7 @@ class Environment():
     def __init__(self, backend='tensorflow'):
         #backend = 'tensorflow' # 'theano' or 'tensorflow'
         os.environ['KERAS_BACKEND'] = backend
-        os.environ["CUDA_VISIBLE_DEVICES"]="0" # "" to run in CPU, extra slow! just for debuging
+        os.environ["CUDA_VISIBLE_DEVICES"]="0,1" # "" to run in CPU, extra slow! just for debuging
         if backend == 'theano':
             # os.environ['THEANO_FLAGS']='mode=FAST_RUN,device=gpu1,floatX=float32,optimizer=fast_compile'
             """ fast_compile que lo que hace es desactivar las optimizaciones => mas lento """

@@ -1,6 +1,6 @@
 # Dataset
 problem_type                 = 'detection'     # ['classification' | 'detection' | 'segmentation']
-dataset_name                 = 'KITTI' # Dataset name
+dataset_name                 = 'KITTI_TEST' # Dataset name
 dataset_name2                = None            # Second dataset name. None if not Domain Adaptation
 perc_mb2                     = None            # Percentage of data from the second dataset in each minibatch
 
@@ -8,21 +8,21 @@ perc_mb2                     = None            # Percentage of data from the sec
 model_name                   = 'yolo'          # Model to use: one of 'yolo' or 'tiny-yolo'
 freeze_layers_from           = None            # Freeze layers from 0 to this layer during training (Useful for finetunning) [None | 'base_model' | Layer_id]
 show_model                   = False           # Show the architecture layers
-load_imageNet                = False            # Load Imagenet weights and normalize following imagenet procedure
+load_imageNet                = True            # Load Imagenet weights and normalize following imagenet procedure
 load_pretrained              = False           # Load a pretrained model for doing finetuning
 weights_file                 = 'weights.hdf5'  # Training weight file name
 
 # Parameters
 train_model                  = True            # Train the model
-test_model                   = False            # Test the model
+test_model                   = False           # Test the model
 pred_model                   = True            # Predict using the model
 
 # Debug
 debug                        = False           # Use only few images for debuging
-debug_images_train           = 16              # N images for training in debug mode (-1 means all)
-debug_images_valid           = 16              # N images for validation in debug mode (-1 means all)
+debug_images_train           = 256              # N images for training in debug mode (-1 means all)
+debug_images_valid           = 32              # N images for validation in debug mode (-1 means all)
 debug_images_test            = 16              # N images for testing in debug mode (-1 means all)
-debug_n_epochs               = 2              # N of training epochs in debug mode
+debug_n_epochs               = 3              # N of training epochs in debug mode
 
 # Batch sizes
 batch_size_train             = 16             # Batch size during training
@@ -44,10 +44,10 @@ seed_valid                   = 1924            # Random seed for the validation 
 seed_test                    = 1924            # Random seed for the testing shuffle
 
 # Training parameters
-optimizer                    = 'rmsprop'       # Optimizer
-learning_rate                = 0.00001         # Training learning rate
-weight_decay                 = 0.              # Weight decay or L2 parameter norm penalty
-n_epochs                     = 10              # Number of epochs during training
+optimizer                    = 'rmsprop'      # Optimizer
+learning_rate                = 0.00001        # Training learning rate
+weight_decay                 = 0.000005        # Weight decay or L2 parameter norm penalty
+n_epochs                     = 10             # Number of epochs during training
 
 # Callback save results
 save_results_enabled         = False           # Enable the Callback
@@ -76,7 +76,7 @@ plotHist_verbose             = 0               # Verbosity of the callback
 
 # Callback LR decay scheduler
 lrDecayScheduler_enabled     = False           # Enable the Callback
-lrDecayScheduler_epochs      = [5, 10, 20]     # List of epochs were decay is applied or None for all epochs
+lrDecayScheduler_epochs      = [15, 20]     # List of epochs were decay is applied or None for all epochs
 lrDecayScheduler_rate        = 2               # Decay rate (new_lr = lr / decay_rate). Usually between 2 and 10.
 
 # Data augmentation for training and normalization
@@ -88,7 +88,7 @@ norm_featurewise_std_normalization = False     # Divide std - dataset
 norm_samplewise_center             = False     # Substract mean - sample
 norm_samplewise_std_normalization  = False     # Divide std - sample
 norm_gcn                           = False     # Global contrast normalization
-norm_zca_whitening                 = False     # Apply ZCA whitening
+norm_zca_whitening                 = True     # Apply ZCA whitening
 cb_weights_method                  = None      # Label weight balance [None | 'median_freq_cost' | 'rare_freq_cost']
 
 # Data augmentation for training
